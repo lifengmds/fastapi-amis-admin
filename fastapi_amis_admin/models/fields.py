@@ -1,13 +1,20 @@
 from typing import AbstractSet, Any, Callable, Dict, Mapping, Optional, Sequence, Union
 
-from pydantic.fields import Undefined, UndefinedType
 from pydantic.typing import NoArgAnyCallable
 from sqlalchemy import Column
 from sqlalchemy.orm import ColumnProperty
 from sqlmodel.main import FieldInfo
 
 from fastapi_amis_admin.amis import FormItem, TableColumn
+from pydantic.version import VERSION as PYDANTIC_VERSION
 
+PYDANTIC_V2 = PYDANTIC_VERSION.startswith("2.")
+
+# import according to pydantic version
+if PYDANTIC_V2:
+    from fastapi._compat import Undefined, UndefinedType
+else:
+    from pydantic.fields import Undefined, UndefinedType
 
 def Field(
     default: Any = Undefined,
